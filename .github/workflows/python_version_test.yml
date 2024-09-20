@@ -1,0 +1,21 @@
+name: python version test action
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  get-python-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        id: pv
+        with:
+          python-version-file: ".python-version"
+      - run: echo "python-version=${{ steps.pv.outputs.python-version }}" >> $GITHUB_OUTPUT
