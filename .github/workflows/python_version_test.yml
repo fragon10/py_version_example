@@ -9,13 +9,16 @@ on:
       - main
 
 jobs:
-  get-python-version:
+  linter-and-formatter:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || env.deploy_TAG }}
       - uses: actions/setup-python@v5
-        id: pv
+        id: setup-python
         with:
           python-version-file: ".python-version"
-      - run: echo "python-version=${{ steps.pv.outputs.python-version }}" >> $GITHUB_OUTPUT
+
+      - name: Print python version
+        run: echo "python-version=${{ steps.setup-python.outputs.python-version }}" >> $GITHUB_OUTPUT
